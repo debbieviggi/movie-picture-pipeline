@@ -75,6 +75,7 @@ jobs:
         id: image
         run: |
           IMAGE=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+          echo "REACT_APP_MOVIE_API_URL=$REACT_APP_MOVIE_API_URL"
           docker build \
             --build-arg=REACT_APP_MOVIE_API_URL=$REACT_APP_MOVIE_API_URL \
             --tag=$IMAGE .
