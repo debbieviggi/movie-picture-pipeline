@@ -91,3 +91,21 @@ jobs:
         run: |
           kustomize edit set image backend=${{ needs.build.outputs.image }}
           kustomize build | kubectl apply -f -
+
+          echo "=== BACKEND DEPLOYMENT ==="
+          kubectl get deployment backend
+
+          echo "=== BACKEND PODS ==="
+          kubectl get pods -l app=backend -o wide
+
+          echo "=== BACKEND POD DETAILS ==="
+          kubectl describe pods -l app=backend
+
+          echo "=== BACKEND EVENTS ==="
+          kubectl get events --sort-by=.lastTimestamp | tail -30
+
+          echo "=== BACKEND SERVICE ==="
+          kubectl get service backend -o wide
+
+          echo "=== BACKEND ROLLOUT ==="
+          kubectl rollout status deployment/backend --timeout=120s
