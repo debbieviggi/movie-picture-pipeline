@@ -103,26 +103,3 @@ jobs:
         run: |
           kustomize edit set image frontend=${{ needs.build.outputs.image }}
           kustomize build | kubectl apply -f -
-
-          echo "=== FRONTEND DEPLOYMENT ==="
-          kubectl get deployment frontend
-
-          echo "=== FRONTEND PODS ==="
-          kubectl get pods -l app=frontend -o wide
-
-          echo "=== FRONTEND POD DETAILS ==="
-          kubectl describe pods -l app=frontend
-
-          echo "=== FRONTEND EVENTS ==="
-          kubectl get events --sort-by=.lastTimestamp | tail -30
-
-          echo "=== FRONTEND SERVICE ==="
-          kubectl get service frontend -o wide
-
-          echo "=== FRONTEND ROLLOUT ==="
-          kubectl rollout status deployment/frontend --timeout=120s
-
-          echo "=== FRONTEND LOAD BALANCER ==="
-          kubectl get service frontend \
-            -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
-          echo
